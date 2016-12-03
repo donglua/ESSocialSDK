@@ -45,6 +45,10 @@ public class SocialShareActivity extends Activity implements IWeiboHandler.Respo
         info = (SocialInfo) getIntent().getExtras().getSerializable("info");
         scene = (SocialShareScene) getIntent().getExtras().getSerializable("scene");
 
+        if (scene == null || scene.getType() == SocialShareScene.SHARE_TYPE_WEIBO) {
+            finish();
+        }
+
         initViews();
     }
 
@@ -133,6 +137,7 @@ public class SocialShareActivity extends Activity implements IWeiboHandler.Respo
                         + baseResponse.errMsg)));
                 break;
         }
+        finish();
     }
 
     @Override
@@ -141,15 +146,15 @@ public class SocialShareActivity extends Activity implements IWeiboHandler.Respo
 
         if (requestCode == Constants.REQUEST_QZONE_SHARE || requestCode == Constants.REQUEST_QQ_SHARE) {
             SocialSDK.shareToQCallback(requestCode, resultCode, data);
-            finish();
         }
-
+        finish();
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        if (scene.getType() == SocialShareScene.SHARE_TYPE_WECHAT || scene.getType() == SocialShareScene.SHARE_TYPE_WECHAT_TIMELINE) {
+        if (scene.getType() == SocialShareScene.SHARE_TYPE_WECHAT
+            || scene.getType() == SocialShareScene.SHARE_TYPE_WECHAT_TIMELINE) {
             finish();
         }
     }
